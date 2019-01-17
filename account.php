@@ -14,8 +14,6 @@ if(isset($_POST['account'])){
     $orgName =$_POST['OrgName'];
     $type=$_POST['type'];
     $email=$_POST['email'];
-    
-    
 
     function accounts($location,$orgPhone,$orgName,$email,$type){
         
@@ -62,6 +60,8 @@ if(isset($_POST['account'])){
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
           <a class="dropdown-item" href="account.php">Add Account</a>
+          <a class="dropdown-item" href="contacts.php">Contacts</a>
+          <a class="dropdown-item" href="category.php">Category</a>
           <a class="dropdown-item" href="reset-password.php">Reset Password</a>
           <a class="dropdown-item" href="logout.php">Logout</a>
         </div>

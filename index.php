@@ -49,6 +49,7 @@ if(isset($_POST['send'])){
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
           <a class="dropdown-item" href="account.php">Add Account</a>
           <a class="dropdown-item" href="category.php">Add Category</a>
+          <a class="dropdown-item" href="contacts.php">Contacts</a>
           <a class="dropdown-item" href="reset-password.php">Reset Password</a>
           <a class="dropdown-item" href="logout.php">Logout</a>
         </div>
