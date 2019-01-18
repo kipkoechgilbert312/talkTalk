@@ -30,7 +30,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         
         $sql = "SELECT userId, Email, Password FROM users WHERE Email = :email";
         
-        if($stmt = $pdo->prepare($sql)){
+        if($stmt = connectdb()->prepare($sql)){
             
             $stmt->bindParam(":email", $param_email, PDO::PARAM_STR);
             

@@ -7,8 +7,10 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: login.php");
     exit;
 }
-if(isset($_POST['cat'])){
 
+
+
+if(isset($_POST['cat'])){
     $catName =$_POST['catName'];
     $catDesc =$_POST['catDesc'];
     $catorgid =$_POST['type'];
@@ -22,11 +24,17 @@ if(isset($_POST['cat'])){
        
     }
     category($catName, $catDesc, $catorgid);
+
 }
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<style>
+
+</style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -38,7 +46,7 @@ if(isset($_POST['cat'])){
 </head>
 <body>
     <div class="container">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-dark">
   <a class="navbar-brand" href="#">talkTalk</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -68,16 +76,21 @@ if(isset($_POST['cat'])){
 </nav>
 <div class="row">
     <div class="col-6" id="body-adjust">
+    
 <form action="" method="post">
 <div class="form-group"><label for="type">Type:</label>
         <select name="type" id="" class="form-control form-control-sm">
-            <option value="#">Select One</option>
-            <option value="company" >Company</option>
-            <option value="church" >Church</option>
-            <option value="school" >School</option>
-            <option value="university" >University</option>
-            <option value="college" >College</option>
-            <option value="ngo" >NGO</option>
+        <?php 
+        $getaccount = connectdb()->prepare("SELECT * FROM  accounts");
+        $getaccount->execute();
+        $accounts = $getaccount->fetchAll();
+        
+        foreach ($accounts as $account) {
+            
+        ?>
+            <option value="<?php echo $account['ID'] ?> "><?php echo $account['OrganisationName'] ?></option>
+<?php }
+        ?>
         </select>
     </div>
     <div class="form-group"><label for="Name">Category Name:</label><input type="text" name="catName" id="catName" class="form-control form-control-sm" placeholder="Enter Category Name"></label></div>
