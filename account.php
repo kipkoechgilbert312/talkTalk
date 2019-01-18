@@ -1,14 +1,6 @@
 <?php 
 require_once('config.php');
 include_once('includes\header.php');
-session_start();
- 
-if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
-    header("location: login.php");
-    exit;
-}
-
-include_once('includes\navbar.php');
 
 if(isset($_POST['account'])){
 
@@ -30,8 +22,6 @@ if(isset($_POST['account'])){
     accounts($location,$orgPhone,$orgName,$email,$type);
 }
 ?>
-<div class="row">
-<div class="col-6" id="body-adjust">
             <form action="" method="post">  
                     <h4>Fill all</h4>
                     <div class="form-group">
@@ -58,8 +48,6 @@ if(isset($_POST['account'])){
 
                     <button type="submit" class="btn btn-sm btn-primary" name="account">Submit</button>
             </form>
-        </div>
-    
-</div>
+
 
 <?php include_once('includes\footer.php') ?>

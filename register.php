@@ -16,7 +16,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
       
         $sql = "SELECT UserID FROM users WHERE email = :email";
         
-        if($stmt = $pdo->prepare($sql)){
+        if($stmt = connectdb()->prepare($sql)){
             
             $stmt->bindParam(":email", $param_email, PDO::PARAM_STR);
             
@@ -58,7 +58,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $sql = "INSERT INTO users (email, password) VALUES (:email, :password)";
          
         var_dump($sql);
-        if($stmt = $pdo->prepare($sql)){
+        if($stmt = connectdb()->prepare($sql)){
   
             $stmt->bindParam(":email", $param_email, PDO::PARAM_STR);
             $stmt->bindParam(":password", $param_password, PDO::PARAM_STR);
@@ -77,32 +77,33 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         unset($stmt);
     }
 
-    unset($pdo);
+    // unset();
 }
 ?>
-    
-        <h2>Sign Up</h2>
+    <div class="wrap">
+        
+    <h2>Sign Up</h2>
         <p>Please fill this form to create an account.</p>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <div class="form-group <?php echo (!empty($email_err)) ? 'has-error' : ''; ?>">
-                <label>Email</label>
-                <input type="email" name="email" class="form-control" value="<?php echo $email; ?>">
+            <span><i class="fas fa-envelope-square"></i></span><label>Email</label>
+                <input type="email" name="email" class="form-control form-control-sm" value="<?php echo $email; ?>">
                 <span class="help-block"><?php echo $email_err; ?></span>
             </div>    
             <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
-                <label>Password</label>
-                <input type="password" name="password" class="form-control" value="<?php echo $password; ?>">
+            <span><i class="fas fa-unlock-alt"></i></span><label>Password</label>
+                <input type="password" name="password" class="form-control form-control-sm" value="<?php echo $password; ?>">
                 <span class="help-block"><?php echo $password_err; ?></span>
             </div>
             <div class="form-group <?php echo (!empty($confirm_password_err)) ? 'has-error' : ''; ?>">
-                <label>Confirm Password</label>
-                <input type="password" name="confirm_password" class="form-control" value="<?php echo $confirm_password; ?>">
+            <span><i class="fas fa-unlock-alt"></i></span><label>Confirm Password</label>
+                <input type="password" name="confirm_password" class="form-control form-control-sm" value="<?php echo $confirm_password; ?>">
                 <span class="help-block"><?php echo $confirm_password_err; ?></span>
             </div>
             <div class="form-group">
-                <input type="submit" class="btn btn-primary" value="Submit">
-                <input type="reset" class="btn btn-default" value="Reset">
+                <input type="submit" class="btn btn-sm btn-primary" value="Submit">
             </div>
             <p>Already have an account? <a href="login.php">Login here</a>.</p>
         </form>
+    </div>
         <?php include_once('includes\footer.php') ?>

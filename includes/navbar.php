@@ -6,22 +6,10 @@
   <div class="collapse navbar-collapse" id="navbarNavDropdown">
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" href="#">Send Message</a>
+        <a class="nav-link" href="#"><?php echo htmlspecialchars($_SESSION["email"]); ?></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Notifications</a>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <?php echo htmlspecialchars($_SESSION["email"]); ?>
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href="account.php">Add Account</a>
-          <a class="dropdown-item" href="category.php">Add Category</a>
-          <a class="dropdown-item" href="contacts.php">Contacts</a>
-          <a class="dropdown-item" href="reset-password.php">Reset Password</a>
-          <a class="dropdown-item" href="logout.php">Logout</a>
-        </div>
+        <a class="nav-link" href="logout.php">Logout</a>
       </li>
     </ul>
   </div>

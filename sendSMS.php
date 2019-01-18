@@ -23,14 +23,11 @@ try {
 
     $sql = "INSERT INTO messages(MsgPhone, MsgText,MsgCreateTime, MsgSender) VALUES('$recipients','$message',now(),'$userid')";
     connectdb()->exec($sql);
-    // print_r($result);
+     
     echo "<script type= 'text/javascript'>alert('Message successfully sent');</script>";
 
 } catch (Exception $e) {
     echo "Error: ".$e->getMessage();
 }
 }
-
-
-
 

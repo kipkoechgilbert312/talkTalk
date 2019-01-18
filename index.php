@@ -17,19 +17,61 @@ if(isset($_POST['send'])){
     sendSMS($recipients,$message);
 }
 ?>
-    <div class="col-sm-4">
-    <form action="" method="post"> 
-    <h3> Send Message</h3>
-    <div class="form-group">
-       <label for="Phone Number">Phone Number:</label> <input type="tel" name="phone" id="phone" placeholder="0727143163" class="form-control form-control-sm">
-    </div>
-    <div class="form-group">
-       <label for="Message">Message:</label> <textarea name="msg" id="msg" cols="20" rows="5" class="form-control">
-        </textarea>
-    </div>
-    <button type="submit" class="btn btn-sm btn-primary" name="send"> Send </button>
-</form>
-    </div>
+
+<div class="row">
+<div class="col-sm-4">
+<nav class="nav-bar">
+<div class="navbar-default sidebar" role="navigation">
+    
+            <div class="sidebar-nav navbar-collapse">
+                <ul class="nav" id="side-menu">  
+                    <?php $active = isset($_GET['active']) ? $_GET['active'] : "";?>
+                <!-- <li><a href="index.php" class="active"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a></li> -->
+                <li><a href="?active=message"><i class="fa fa-user fa-fw"></i> Message</a></li>
+		        <li><a href="?active=account">Add Account</a></li>
+		        <li><a href="?active=add_category">Add Category</a></li>
+		        <li><a href="?active=get_contacts">Add Contacts</a></li>                   
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<div class="col-sm-8">
+<h1 class="page-header">
+                    	<?php if ($active === 'message' ) {
+                    		echo 'Message';
+                    	}?>
+                    	<?php if ($active === 'account' ) {
+                    		echo 'Accounts';
+                    	}?>
+                    	<?php if ($active === 'add_category' ) {
+                    		echo 'Category';
+                    	}?>
+                    	<?php if ($active === 'get_contacts' ) {
+                    		echo 'Add Contacts';
+                    	}?>
+                    </h1>
 
 
+                    <?php if ($active === 'message' ) { ?>
+    <?php include_once("message.php") ;?>
+<?php } ?>
+
+<?php if ($active === 'account' ) { ?>
+    <?php include_once("account.php") ;?>
+<?php } ?>
+
+
+<?php if ($active === 'add_category' ) { ?>
+   <?php  include_once("category.php");?>
+<?php } ?>
+
+
+<?php if ($active === 'get_contacts' ) { ?>
+    <?php include_once("contacts.php");?>
+<?php } ?>
+</div>
+
+</div>
 <?php include_once('includes\footer.php');
