@@ -20,14 +20,14 @@ try {
         'to'      => $recipients,
         'message' => $message
     ]); 
-
-    $array = json_decode( json_encode($result), true);
-    // print_r($array);
-$value =[];
-    foreach($array as $key){
-       $value[] = $key;
-       print_r($value);
-    }
+    
+    $status = $result['status'];
+    $data = $result['data'];
+    $messageData = $data->SMSMessageData;
+    $messageString = $messageData->Message;
+    // array fo stdClass so when looping access with $key->phone, $key->statusCode etc
+    $messageRecipients = $messageData->Recipients; 
+   
     // $sql = "INSERT INTO messages(MsgPhone, MsgText,MsgCreateTime, MsgSender) VALUES('$recipients','$message',now(),'$userid')";
     // connectdb()->exec($sql);
      
