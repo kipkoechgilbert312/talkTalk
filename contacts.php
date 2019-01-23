@@ -1,6 +1,5 @@
 <?php 
 require_once('config.php');
-include_once('includes\header.php');
 
 if(isset($_POST['submit'])){
 
@@ -22,9 +21,9 @@ if(isset($_POST['submit'])){
 ?>
 
     <form action="" method="post">
-            <h3>Contacts Form</h3>
             <div class="form-group"><label for="type">Type:</label>
-        <select name="type" id="" class="form-control form-control-sm">
+        <select name="type" id="" class="selectpicker">
+           
         <?php 
         $getcategory = connectdb()->prepare("SELECT * FROM  categories");
         $getcategory->execute();

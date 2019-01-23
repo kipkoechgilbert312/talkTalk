@@ -23,7 +23,6 @@ if(isset($_POST['account'])){
 }
 ?>
             <form action="" method="post">  
-                    <h4>Fill all</h4>
                     <div class="form-group">
                     <label for="OrgName">Organization Name:</label> <input type="text" name="OrgName" id="OrgName" class="form-control form-control-sm" placeholder="QQ software ltd">
                     </div>

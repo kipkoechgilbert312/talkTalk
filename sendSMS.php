@@ -19,12 +19,19 @@ try {
     $result = $sms->send([
         'to'      => $recipients,
         'message' => $message
-    ]);
+    ]); 
 
-    $sql = "INSERT INTO messages(MsgPhone, MsgText,MsgCreateTime, MsgSender) VALUES('$recipients','$message',now(),'$userid')";
-    connectdb()->exec($sql);
+    $array = json_decode( json_encode($result), true);
+    // print_r($array);
+$value =[];
+    foreach($array as $key){
+       $value[] = $key;
+       print_r($value);
+    }
+    // $sql = "INSERT INTO messages(MsgPhone, MsgText,MsgCreateTime, MsgSender) VALUES('$recipients','$message',now(),'$userid')";
+    // connectdb()->exec($sql);
      
-    echo "<script type= 'text/javascript'>alert('Message successfully sent');</script>";
+    // echo "<script type= 'text/javascript'>alert('Message successfully sent');</script>";
 
 } catch (Exception $e) {
     echo "Error: ".$e->getMessage();

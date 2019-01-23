@@ -6,7 +6,7 @@
   <div class="collapse navbar-collapse" id="navbarNavDropdown">
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" href="#"><?php echo htmlspecialchars($_SESSION["email"]); ?></a>
+        <a class="nav-link" href="#"></a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="logout.php">Logout</a>

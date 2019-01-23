@@ -1,6 +1,5 @@
 <?php 
 require_once('config.php');
-include_once('includes\header.php');
 
 if(isset($_POST['cat'])){
     $catName =$_POST['catName'];
@@ -18,12 +17,10 @@ if(isset($_POST['cat'])){
     category($catName, $catDesc, $catorgid);
 
 }
-
-
 ?>
 <form action="" method="post">
 <div class="form-group"><label for="type">Type:</label>
-        <select name="type" id="" class="form-control form-control-sm">
+        <select name="type" id="" class="selectpicker">
         <?php 
         $getaccount = connectdb()->prepare("SELECT * FROM  accounts");
         $getaccount->execute();
