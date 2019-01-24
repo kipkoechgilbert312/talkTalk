@@ -1,21 +1,12 @@
 <?php 
-require_once('config.php');
-
+require_once('includes\config.php');
+include_once('includes\model.php');
 if(isset($_POST['cat'])){
     $catName =$_POST['catName'];
     $catDesc =$_POST['catDesc'];
     $catorgid =$_POST['type'];
 
-    function category($catName, $catDesc, $catorgid){
-        
-        $sql = "INSERT INTO categories(CatOrgId, Name, Description) VALUES('$catorgid','$catName','$catDesc')";
-        
-       connectdb()->exec($sql);
-       echo "<script type= 'text/javascript'>alert('Data successfully sent');</script>";
-       
-    }
     category($catName, $catDesc, $catorgid);
-
 }
 ?>
 <form action="" method="post">

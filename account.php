@@ -1,6 +1,7 @@
 <?php 
-require_once('config.php');
-include_once('includes\header.php');
+require_once('includes\config.php');
+include_once('includes\model.php');
+
 
 if(isset($_POST['account'])){
 
@@ -10,15 +11,6 @@ if(isset($_POST['account'])){
     $type=$_POST['type'];
     $email=$_POST['email'];
 
-    function accounts($location,$orgPhone,$orgName,$email,$type){
-        
-        $sql = "INSERT INTO accounts(OrganisationName,phone,Email,AccountLocation,AccountType) VALUES('$location','$orgPhone','$orgName','$email','$type')";
-        
-       connectdb()->exec($sql);
-       echo "<script type= 'text/javascript'>alert('Data successfully sent');</script>";
-       header("location:index.php");
-       
-    }
     accounts($location,$orgPhone,$orgName,$email,$type);
 }
 ?>

@@ -7,7 +7,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     exit;
 }
  
-require_once "config.php";
+require_once "includes\config.php";
 include_once('includes\header.php');
 $new_password = $confirm_password = "";
 $new_password_err = $confirm_password_err = "";

@@ -1,6 +1,6 @@
 <?php 
-require_once('config.php');
-
+require_once('includes\config.php');
+include_once('includes\model.php');
 if(isset($_POST['submit'])){
 
     $contCatId =$_POST['type'];
@@ -9,13 +9,7 @@ if(isset($_POST['submit'])){
     $contCreator = $_SESSION["id"];
     $contEmail=$_POST['contmail'];
     
-    function contacts($contCatId,$contPhone,$contName, $contCreator,$contEmail){
-        $sql = "INSERT INTO contacts(ContCatID, ContPhone,ContName,ContCreator,ContEmail) VALUES('$contCatId','$contPhone','$contName', '$contCreator','$contEmail')";
-        
-       connectdb()->exec($sql);
-       echo "<script type= 'text/javascript'>alert('Data successfully sent');</script>";
-       
-    }
+
     contacts($contCatId,$contPhone,$contName, $contCreator,$contEmail);
 }
 ?>

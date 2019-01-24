@@ -1,3 +1,16 @@
+<?php 
+
+if(isset($_POST['tuma'])){
+    
+    $recipients =$_POST['type'];
+    $message = $_POST['ujumbe'];
+
+    sendSMS($recipients,$message);
+}
+
+
+?>
+
 <!-- 
     <form action="" method="post"> 
     <div class="form-group">
@@ -9,17 +22,7 @@
     </div>
     <button type="submit" class="btn btn-sm btn-primary" name="send"> Send </button>
 </form> -->
-<?php 
 
-// if(isset($_POST['tuma'])){
-//     $type =$_POST['type'];
-//     $ujumbe = $_POST['ujumbe'];
-
-//     print_r($type);
-
-// }
-
-?>
 <h2>Send Message to Multiple People</h2>
 <form action="" method="post"> 
     <div class="form-group">

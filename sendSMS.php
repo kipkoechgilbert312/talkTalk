@@ -1,6 +1,6 @@
 <?php
 require 'vendor/autoload.php';
-require 'config.php';
+require 'includes\config.php';
 use AfricasTalking\SDK\AfricasTalking;
 
 $username   = "Quadrant";
@@ -20,15 +20,11 @@ try {
         'to'      => $recipients,
         'message' => $message
     ]); 
-    print_r($result);
     
+    $sql = "INSERT INTO messages(MsgPhone, MsgText,MsgCreateTime, MsgSender) VALUES('$recipients','$message',now(),'$userid')";
+   connectdb()->exec($sql);
 
-foreach($recipients as $key){
-    $sql = "INSERT INTO messages(MsgPhone, MsgText,MsgCreateTime, MsgSender) VALUES('$key','$message',now(),'$userid')";
-    connectdb()->exec($sql);
-     
-}
-    echo "<script type= 'text/javascript'>alert('Message successfully sent');</script>";
+  echo "<script type= 'text/javascript'>alert('Message successfully sent');</script>";
 
 } catch (Exception $e) {
     echo "Error: ".$e->getMessage();

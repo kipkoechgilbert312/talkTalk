@@ -1,6 +1,6 @@
 <?php
 
-require_once "config.php";
+require_once "includes\config.php";
 include_once('includes\header.php');
 
 $email = $password = $confirm_password = "";
