@@ -33,7 +33,7 @@
         foreach ($categories as $category) {
             
         ?>
-            <option value="<?php echo  "0" + $category['ContPhone'] ?> "><?php echo $category['ContName'] ?></option>
+            <option value="<?php echo  $category['ContPhone'] ?> "><?php echo $category['ContPhone']; echo $category['ContName'] ?></option>
 <?php }
         ?>
         </select>

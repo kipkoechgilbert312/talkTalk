@@ -1,6 +1,7 @@
 <?php
 require_once('sendSMS.php');
 include_once('includes/header.php');
+include_once('includes/navbar.php');
 
 session_start();
  
@@ -8,13 +9,14 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: login.php");
     exit;
 }
-include_once('includes/navbar.php');
+
 
 if(isset($_POST['tuma'])){
-    // $recipients = $_POST['phone'];
-    // $message = $_POST['msg'];
+    
     $recipients =$_POST['type'];
     $message = $_POST['ujumbe'];
+    var_dump($recipients);
+
 
     sendSMS($recipients,$message);
 }
@@ -26,9 +28,7 @@ if(isset($_POST['tuma'])){
                 <ul>  
                 <?php $active = isset($_GET['active']) ? $_GET['active'] : "";?>
                 <li><a href="#"> <i class="fa fa-user fa-fw"></i> <?php echo htmlspecialchars($_SESSION["email"]); ?></a></li>
-                <li><a href="#" class="active"><i class="fas fa-tachometer-alt"></i>
-
-Dashboard</a></li>
+                <li><a href="#" class="active"><i class="fas fa-tachometer-alt"></i>Dashboard</a></li>
                 <li><a href="?active=message">SEND MESSAGE</a></li>
                 <li><a href="?active=msg">BULK MESSAGE</a></li>
 		        <li><a href="?active=account">ADD ACCOUNTS</a></li>
