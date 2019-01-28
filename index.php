@@ -1,7 +1,7 @@
 <?php
 require_once('sendSMS.php');
 include_once('includes/header.php');
-
+include_once('includes/navbar.php');
 session_start();
  
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
@@ -11,18 +11,13 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
 
 ?>
-<?php
 
-// include_once('includes/navbar.php');
-
-?>
 <div class="row">
 <div class="col-sm-4">
                 <ul>  
                 <?php $active = isset($_GET['active']) ? $_GET['active'] : "";?>
                 <li><a href="#"> <i class="fa fa-user fa-fw"></i> <?php echo htmlspecialchars($_SESSION["email"]); ?></a></li>
                 <li><a href="?active=message">SEND MESSAGE</a></li>
-		        <li><a href="?active=account">ADD ACCOUNTS</a></li>
 		        <li><a href="?active=add_category">ADD CATEGORY</a></li>
 		        <li><a href="?active=get_contacts">ADD CONTACTS</a></li>                  
                 </ul>
