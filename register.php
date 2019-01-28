@@ -1,20 +1,32 @@
 <?php
 
-require_once "includes\config.php";
+include_once('includes\config.php');
 include_once('includes\header.php');
 include_once('includes\model.php');
-$email = $password = $confirm_password = "";
-$email_err = $password_err = $confirm_password_err = "";
+$email = $password = $confirm_password =$country =$type= "";
+$email_err = $password_err = $confirm_password_err =$country_err =$type_error= "";
  
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
+$CON= connectdb();
+    if(empty($_POST['new'])){
+        $type_error = "Please enter the value";
+    }else{
+        $type=$_POST['new'];
+    }
+    if(empty($_POST['country'])){
+        $country_err= "Please enter the value";
+    }else{
+        $type=$_POST['country'];
+        echo $country;
+    }
+
+    
     $location = $_POST['location'];
     $orgPhone =$_POST['phone'];
     $orgName =$_POST['OrgName'];
-    $type=$_POST['type'];
-    $email=$_POST['email'];
-
-    accounts($location,$orgPhone,$orgName,$email,$type);
+   
+    // $country = $_POST['country'];
 
     if(empty(trim($_POST["email"]))){
         $email_err = "Please enter a email.";
@@ -22,7 +34,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
       
         $sql = "SELECT UserID FROM users WHERE email = :email";
         
-        if($stmt = connectdb()->prepare($sql)){
+        if($stmt = $CON->prepare($sql)){
             
             $stmt->bindParam(":email", $param_email, PDO::PARAM_STR);
             
@@ -60,36 +72,39 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
     
     if(empty($email_err) && empty($password_err) && empty($confirm_password_err)){
-        
-        $sql = "INSERT INTO users (email, password) VALUES (:email, :password)";
-         
-        var_dump($sql);
-        if($stmt = connectdb()->prepare($sql)){
-  
-            $stmt->bindParam(":email", $param_email, PDO::PARAM_STR);
-            $stmt->bindParam(":password", $param_password, PDO::PARAM_STR);
-            
-            $param_email = $email;
-            $param_password = password_hash($password, PASSWORD_DEFAULT);
-            
-            if($stmt->execute()){
+        accounts($country, $location,$orgPhone,$orgName,$type, $email, $password);
+    //         $sql = "INSERT INTO users (accountId, email, password) VALUES (:accountid, :email, :password)";
+    
+    //         if($stmt = connectdb()->prepare($sql)){
+    //             $stmt->bindParam(":accountid", $accountid, PDO::PARAM_STR);
+    //             $stmt->bindParam(":email", $param_email, PDO::PARAM_STR);
+    //             $stmt->bindParam(":password", $param_password, PDO::PARAM_STR);
                 
-                header("location: login.php");
-            } else{
-                echo "Something went wrong. Please try again later.";
-            }
-        }
-         
-        unset($stmt);
+    //             $param_email = $email;
+    //             $param_password = password_hash($password, PASSWORD_DEFAULT);
+                
+    //             if($stmt->execute()){
+                    
+    //                 header("location: login.php");
+    //             } else{
+    //                 echo "Something went wrong. Please try again later.";
+    //             }
+            
+             
+    //     }else{
+    //         echo "There was an error inserting the data";
+    //     }
+
+
+
+    //     unset($stmt);
     }
 
     // unset();
 }
 ?>
-    <div class="wrap">
      <div class="row">
      <div class="col-sm-6">
-            
             <h2>Sign Up</h2>
                 <p>Please fill this form to create an account.</p>
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
@@ -113,18 +128,26 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
              </div>
                 <div class="col-sm-6">
                             <div class="form-group">
+                            <label for="country">Select Country: </label>
+                            <select name="country" id="" class="selectpicker" >
+                            <option value="+254">Kenya</option>
+                            <option value="+252">Uganda</option>
+                            <option value="+255">Tanzania</option>
+                            </select>
+
+                            </div>
+
+                            <div class="form-group">
                             <label for="OrgName">Organization Name:</label> <input type="text" name="OrgName" id="OrgName" class="form-control form-control-sm" placeholder="QQ software ltd">
                             </div>
                             <div class="form-group">
                             <label for="location">Location:</label> <input type="text" name="location" id="location" class="form-control form-control-sm" placeholder="Nairobi">
                             </div>
-                            <div class="form-group">
-                                <label for="">Email:</label><input type="email" name="email" id="email" class="form-control form-control-sm" placeholder="email">
-                            </div>
                             <div class="form-group">Phone Number:<label for="Phone"></label><input type="tel" name="phone" id="phone" class="form-control form-control-sm" placeholder="0727143163"></div>
-                            <div class="form-group"><label for="type">Type:</label>
-                                <select name="type" id="" class="form-control form-control-sm">
-                                    <option value="#">Select One</option>
+                            <p>Already have an account? <a href="login.php">Login here</a>.</p>
+                                               <div class="form-group">
+                                               <div class="form-group"><label for="type">Select Type of Account</label>
+                                <select name="new" id=""  class="selectpicker">
                                     <option value="company" >Company</option>
                                     <option value="church" >Church</option>
                                     <option value="school" >School</option>
@@ -133,14 +156,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                     <option value="ngo" >NGO</option>
                                 </select>
                             </div>
-                            <p>Already have an account? <a href="login.php">Login here</a>.</p>
-                                               <div class="form-group">
                         <input type="submit" class="btn btn-sm btn-primary" value="Submit">
                     </div> 
                    
                  </form>
-                    </form>
+                    
                 </div>
-            </div>
-     </div>
+  
         <?php include_once('includes\footer.php') ?>

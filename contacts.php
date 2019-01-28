@@ -4,15 +4,13 @@ include_once('includes/model.php');
 if(isset($_POST['submit'])){
 
     $contCatId =$_POST['type'];
-    $contPhoneNo =$_POST['phone'];
+    $contPhone =$_POST['phone'];
     $contName =$_POST['contName'];
     $contCreator = $_SESSION["id"];
     $contEmail=$_POST['contmail'];
     $country =$_POST['country'];
-   $contPhone = $country . $contPhoneNo;
- 
-
-    contacts($contCatId,$contPhone,$contName, $contCreator,$contEmail);
+   
+    contacts($contCatId,$country, $contPhone,$contName, $contCreator,$contEmail);
 }
 ?>
 
@@ -27,6 +25,7 @@ if(isset($_POST['submit'])){
 <table class="table">
   <thead class="thead-dark">
     <tr>
+      <th scope="col">Country Code</th>
       <th scope="col">Name</th>
       <th scope="col">Phone</th>
       <th scope="col">Email</th>
@@ -44,19 +43,18 @@ if(isset($_POST['submit'])){
         foreach ($contacts as $contact) {
             
         ?><tr>
+          <td><?php echo $contact['CountryCode'] ;?></td>
             <td><?php echo $contact['ContName'] ?></td>
             <td><?php echo $contact['ContPhone'] ?></td>
             <td><?php echo $contact['ContEmail'] ?></td>
-            <td><button type="button" class="btn btn-warning"><a href="includes\edit.php"><i class="fas fa-edit"></i></a></button></td>
-      <td><button type="button" class="btn btn-danger"><a href="includes\delete.php"><i class="fas fa-trash-alt"></i></a></button></td>
+            <td><button type="button" class="btn btn-warning"><a href="includes\editcontact.php?id=<?php echo $contact['ContID'] ?>"><i class="fas fa-edit"></i></a></button></td>
+            <td><button type="button" class="btn btn-danger"><a href="includes\deletecontact.php?id=<?php echo $contact['ContID'] ?>"><i class="fas fa-trash-alt"></i></a></button></td>
     </tr>
 <?php }
         ?>
 
   </tbody>
 </table>
-
-
 
 
 

@@ -28,7 +28,7 @@ if(isset($_POST['cat'])){
   <tbody>
     
       <?php 
-        $getcategory = connectdb()->prepare("SELECT Name, Description, accounts.OrganisationName FROM `categories` INNER JOIN accounts ON categories.CatOrgId = accounts.ID");
+        $getcategory = connectdb()->prepare("SELECT CatID, Name, Description, accounts.OrganisationName FROM `categories` INNER JOIN accounts ON categories.CatOrgId = accounts.ID");
         $getcategory->execute();
         $categories = $getcategory->fetchAll();
         
@@ -37,9 +37,9 @@ if(isset($_POST['cat'])){
         ?><tr>
             <td><?php echo $category['Name'] ?></td>
             <td><?php echo $category['Description'] ?></td>
-            <td><button type="button" class="btn btn-warning"><i class="fas fa-edit"></i></button></td>
-      <td><button type="button" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button></td>
-    </tr>
+            <td><button type="button" class="btn btn-warning"><a href="includes\editcategory.php?id=<?php echo $category['CatID']; ?> "><i class="fas fa-edit"></i></a></button></td>
+            <td><button type="button" class="btn btn-danger"><a href="includes\deletecategory.php?id=<?php echo $category['CatID']; ?>"><i class="fas fa-trash-alt"></i></a></button></td>
+          </tr>
 <?php }
         ?>
 

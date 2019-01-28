@@ -21,8 +21,10 @@ try {
         'message' => $message
     ]); 
     
+foreach($recipients as $recipient){
     $sql = "INSERT INTO messages(MsgPhone, MsgText,MsgCreateTime, MsgSender) VALUES('$recipients','$message',now(),'$userid')";
-   connectdb()->exec($sql);
+    connectdb()->exec($sql);
+}
 
   echo "<script type= 'text/javascript'>alert('Message successfully sent');</script>";
 
