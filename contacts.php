@@ -1,6 +1,22 @@
 <?php 
 require_once('includes/config.php');
 include_once('includes/model.php');
+
+
+$CON = connectdb();
+
+$userid =  $_SESSION["id"];
+
+    $stmt = "SELECT *, accounts.OrganisationName from users INNER JOIN accounts on users.accountId =accounts.ID where userId =$userid";
+            
+    $getaccountid = $CON->prepare($stmt);
+    $getaccountid->execute();
+    $accountsid = $getaccountid->fetchAll();
+
+    foreach($accountsid as $accountid){
+        $catorgid = $accountid['accountId'];
+    }
+
 if(isset($_POST['submit'])){
 
     $contCatId =$_POST['type'];
@@ -36,7 +52,8 @@ if(isset($_POST['submit'])){
   <tbody>
     
       <?php 
-        $getcontacts = connectdb()->prepare("SELECT * FROM  contacts");
+       $sql = "SELECT contacts.*, categories.CatOrgId FROM `contacts` INNER JOIN categories ON contacts.ContCatID = categories.CatID WHERE categories.CatOrgId = $catorgid";
+        $getcontacts = connectdb()->prepare($sql);
         $getcontacts->execute();
         $contacts = $getcontacts->fetchAll();
         
@@ -75,7 +92,7 @@ if(isset($_POST['submit'])){
         <select name="type" id="" class="selectpicker">
            
         <?php 
-        $getcategory = connectdb()->prepare("SELECT * FROM  categories");
+        $getcategory = connectdb()->prepare("SELECT * FROM  categories WHERE CatOrgId = $catorgid");
         $getcategory->execute();
         $categories = $getcategory->fetchAll();
         

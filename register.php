@@ -3,9 +3,8 @@
 include_once('includes\config.php');
 include_once('includes\header.php');
 include_once('includes\model.php');
-$email = $password = $confirm_password =$country =$type= "";
-$email_err = $password_err = $confirm_password_err =$country_err =$type_error= "";
- 
+$email = $password = $confirm_password =$country =$type=$location=$orgPhone=$orgName= "";
+$email_err = $password_err = $confirm_password_err =$country_err =$type_error=$location_err = $orgPhone_err = $orgName_err="";
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 $CON= connectdb();
@@ -22,11 +21,78 @@ $CON= connectdb();
     }
 
     
-    $location = $_POST['location'];
-    $orgPhone =$_POST['phone'];
-    $orgName =$_POST['OrgName'];
-   
-    // $country = $_POST['country'];
+// Verify Location 
+
+if(empty($_POST['location'])){
+    $location_err ="Please Enter Location";
+}else{
+    $location =$_POST['location'];
+}
+
+// Verify if Type has been selected
+
+if(empty($_POST['type'])){
+    $type_err = "Please Select Type";
+}else{
+    $location =$_POST['type'];
+}
+
+
+// Verify Phone if already taken 
+if(empty(trim($_POST["phone"]))){
+    $orgPhone_err = "Please enter a Contact.";
+} else{
+  
+    $sql = "SELECT ID FROM accounts WHERE phone = :phone";
+    
+    if($stmt = $CON->prepare($sql)){
+        
+        $stmt->bindParam(":phone", $param_phone, PDO::PARAM_INT);
+        
+        $param_phone= trim($_POST["phone"]);
+        
+        if($stmt->execute()){
+            if($stmt->rowCount() == 1){
+                $phone_err = "This Contact is already taken.";
+            } else{
+                $phone = trim($_POST["phone"]);
+            }
+        } else{
+            echo "Oops! Something went wrong. Please try again later.";
+        }
+    }
+
+    unset($stmt);
+}
+
+
+// Verify Organization Name if already Taken 
+if(empty(trim($_POST["orgName"]))){
+    $orgName_err = "Please enter a Organization Name.";
+} else{
+  
+    $sql = "SELECT ID FROM accounts WHERE OrganisationName = :orgName";
+    
+    if($stmt = $CON->prepare($sql)){
+        
+        $stmt->bindParam(":orgName", $param_orgName, PDO::PARAM_STR);
+        
+        $param_orgName = trim($_POST["orgName"]);
+        
+        if($stmt->execute()){
+            if($stmt->rowCount() == 1){
+                $orgName_err = "This Organisation Name is already taken.";
+            } else{
+                $orgName = trim($_POST["orgName"]);
+            }
+        } else{
+            echo "Oops! Something went wrong. Please try again later.";
+        }
+    }
+
+    unset($stmt);
+}
+
 
     if(empty(trim($_POST["email"]))){
         $email_err = "Please enter a email.";
@@ -71,36 +137,10 @@ $CON= connectdb();
         }
     }
     
-    if(empty($email_err) && empty($password_err) && empty($confirm_password_err)){
+    if(empty($email_err) && empty($password_err) && empty($confirm_password_err) && empty($location_err)&&empty($orgPhone_err)&&empty($orgName_err)&&empty($email_err)&&empty($type_err)){
         accounts($country, $location,$orgPhone,$orgName,$type, $email, $password);
-    //         $sql = "INSERT INTO users (accountId, email, password) VALUES (:accountid, :email, :password)";
-    
-    //         if($stmt = connectdb()->prepare($sql)){
-    //             $stmt->bindParam(":accountid", $accountid, PDO::PARAM_STR);
-    //             $stmt->bindParam(":email", $param_email, PDO::PARAM_STR);
-    //             $stmt->bindParam(":password", $param_password, PDO::PARAM_STR);
-                
-    //             $param_email = $email;
-    //             $param_password = password_hash($password, PASSWORD_DEFAULT);
-                
-    //             if($stmt->execute()){
-                    
-    //                 header("location: login.php");
-    //             } else{
-    //                 echo "Something went wrong. Please try again later.";
-    //             }
-            
-             
-    //     }else{
-    //         echo "There was an error inserting the data";
-    //     }
-
-
-
-    //     unset($stmt);
+    var_dump(accounts());
     }
-
-    // unset();
 }
 ?>
      <div class="row">
@@ -133,17 +173,22 @@ $CON= connectdb();
                             <option value="+254">Kenya</option>
                             <option value="+252">Uganda</option>
                             <option value="+255">Tanzania</option>
+                            <span class="help-block"><?php echo $country_err; ?></span>
                             </select>
 
                             </div>
 
                             <div class="form-group">
-                            <label for="OrgName">Organization Name:</label> <input type="text" name="OrgName" id="OrgName" class="form-control form-control-sm" placeholder="QQ software ltd">
-                            </div>
-                            <div class="form-group">
-                            <label for="location">Location:</label> <input type="text" name="location" id="location" class="form-control form-control-sm" placeholder="Nairobi">
-                            </div>
-                            <div class="form-group">Phone Number:<label for="Phone"></label><input type="tel" name="phone" id="phone" class="form-control form-control-sm" placeholder="0727143163"></div>
+                    <label for="OrgName">Organization Name:</label> <input type="text" name="orgName" id="OrgName" class="form-control form-control-sm" placeholder="QQ software ltd">
+                    <span class="help-block"><?php echo $orgName_err; ?></span>
+                    </div>
+                    <div class="form-group">
+                    <label for="location">Location:</label> <input type="text" name="location" id="location" class="form-control form-control-sm" placeholder="Nairobi">
+                   <span class="help-block"><?php echo $location_err; ?></span>
+                    </div>
+                    <div class="form-group">Phone Number:<label for="Phone"></label><input type="tel" name="phone" id="phone" class="form-control form-control-sm" placeholder="0727143163">
+                    <span class="help-block"><?php echo $orgPhone_err; ?></span>
+                    </div>
                             <p>Already have an account? <a href="login.php">Login here</a>.</p>
                                                <div class="form-group">
                                                <div class="form-group"><label for="type">Select Type of Account</label>

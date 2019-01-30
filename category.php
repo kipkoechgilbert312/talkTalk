@@ -1,11 +1,63 @@
 <?php 
 require_once('includes\config.php');
 include_once('includes\model.php');
+$CON = connectdb();
+$userid =  $_SESSION["id"];
+
+$sql = "SELECT *, accounts.OrganisationName from users INNER JOIN accounts on users.accountId =accounts.ID where userId =$userid";
+            
+$getaccount = $CON->prepare($sql);
+$getaccount->execute();
+$accounts = $getaccount->fetchAll();
+
+// var_dump($accounts);
+
+foreach($accounts as $account){
+    $catorgid = $account['accountId'];
+
+}
+
+$catDesc =$catName ="";
+$catDesc_err =$catName_err ="";
+
+
 if(isset($_POST['cat'])){
-    $catName =$_POST['catName'];
-    $catDesc =$_POST['catDesc'];
-    $catorgid =$_POST['type'];
-    category($catName, $catDesc, $catorgid);
+  $CON = connectdb();
+  if(empty(trim($_POST["catName"]))){
+    $catName_err = "Please enter a Contact.";
+  } else{
+  
+    $sql = "SELECT CatID FROM categories WHERE Name = :catName";
+    
+    if($stmt = $CON->prepare($sql)){
+        
+        $stmt->bindParam(":catName", $param_catName, PDO::PARAM_STR);
+        
+        $param_catName= trim($_POST["catName"]);
+        
+        if($stmt->execute()){
+            if($stmt->rowCount() == 1){
+                $catName_err = "This Category Name is already taken.";
+            } else{
+                $catName = trim($_POST["catName"]);
+            }
+        } else{
+            echo "Oops! Something went wrong. Please try again later.";
+        }
+    }
+
+    unset($stmt);
+}
+
+if(empty($_POST['catDesc'])){
+  $catDesc_err = "Please Enter Description";
+}else{
+  $catDesc = $_POST['catDesc'];
+}   
+
+    if(empty($catDesc_err) && empty($catName_err)){
+      category($catName, $catDesc, $catorgid);
+    }
 }
 ?>
 <div class="row">
@@ -28,7 +80,8 @@ if(isset($_POST['cat'])){
   <tbody>
     
       <?php 
-        $getcategory = connectdb()->prepare("SELECT CatID, Name, Description, accounts.OrganisationName FROM `categories` INNER JOIN accounts ON categories.CatOrgId = accounts.ID");
+        $CON = connectdb();
+        $getcategory = $CON->prepare("SELECT CatID, Name, Description, accounts.OrganisationName FROM `categories` INNER JOIN accounts ON categories.CatOrgId = accounts.ID WHERE CatOrgId = $catorgid");
         $getcategory->execute();
         $categories = $getcategory->fetchAll();
         
@@ -57,25 +110,15 @@ if(isset($_POST['cat'])){
       <div class="modal-body">
      
 <form action="" method="post">
-<div class="form-group"><label for="type">Type:</label>
-        <select name="type" id="" class="selectpicker">
-        <?php 
-        $getaccount = connectdb()->prepare("SELECT * FROM  accounts");
-        $getaccount->execute();
-        $accounts = $getaccount->fetchAll();
-        
-        foreach ($accounts as $account) {
-            
-        ?>
-            <option value="<?php echo $account['ID'] ?> "><?php echo $account['OrganisationName'] ?></option>
-<?php }
-        ?>
-        </select>
+
+    <div class="form-group"><label for="Name">Category Name:</label><input type="text" name="catName" id="catName" class="form-control form-control-sm" placeholder="Enter Category Name">
+    <span class="help-block"><?php echo $catName_err; ?></span>
     </div>
-    <div class="form-group"><label for="Name">Category Name:</label><input type="text" name="catName" id="catName" class="form-control form-control-sm" placeholder="Enter Category Name"></label></div>
     <div class="form-group">
     <label for="Category Description">Description:</label><textarea name="catDesc" id="" cols="20" rows="5" class="form-control">   
-    </textarea></div>
+    </textarea>
+    <span class="help-block"><?php echo $catDesc_err; ?></span>
+    </div>
     <button type="submit" class="btn btn-sm btn-primary" name="cat">Submit</button>
     
 </form> 

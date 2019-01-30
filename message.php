@@ -1,6 +1,8 @@
 <?php 
 require_once('includes\config.php');
 include_once('includes\model.php');
+$userid =$_SESSION['id'];
+
 if(isset($_POST['cat'])){
     $catName =$_POST['catName'];
     $catDesc =$_POST['catDesc'];
@@ -28,7 +30,7 @@ if(isset($_POST['cat'])){
   </thead>
   <tbody>
       <?php 
-        $getmessage = connectdb()->prepare("SELECT CatID, Name, Description, accounts.OrganisationName FROM `categories` INNER JOIN accounts ON categories.CatOrgId = accounts.ID");
+        $getmessage = connectdb()->prepare("SELECT * FROM `messages` WHERE MsgSender =$userid");
         $getmessage->execute();
         $categories = $getmessage->fetchAll();
         foreach ($categories as $message) {   
@@ -84,3 +86,17 @@ if(isset($_POST['cat'])){
     </div>
   </div>
 </div>
+
+<?php
+
+// $cats = implode(',', $_POST['cat_id']);
+// $query = "SELECT ContactPhone FROM contacts WHERE ContactCatID IN ($cats)";
+// $RECS = "";
+// while( $row = mysqli_fetch_array(mysqli_query($con, $query))){
+//   $RECS .= $row['ContactPhone'].',';
+// }
+        
+
+
+
+

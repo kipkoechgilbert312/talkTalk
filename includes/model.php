@@ -1,11 +1,11 @@
 <?php
 
 
-
 function accounts($country, $location,$orgPhone,$orgName,$type, $email, $password){
         
     $sql = "INSERT INTO accounts(OrganisationName,CountryCode,phone,AccountLocation,AccountType) VALUES('$orgName','$country','$orgPhone','$location','$type')";
     $CON = connectdb();
+
    $CON ->exec($sql);
    
    $accountid = $CON ->lastInsertId();
@@ -38,15 +38,17 @@ if($CON ->exec($sql)){
 
 
 function category($catName, $catDesc, $catorgid){
-        
+    $CON = connectdb();
     $sql = "INSERT INTO categories(CatOrgId, Name, Description) VALUES('$catorgid','$catName','$catDesc')";
     
    $CON->exec($sql);
+
    echo "<script type= 'text/javascript'>alert('Data successfully sent');</script>";
-   
+   header("location:../index.php?active=add_category");
 }
 
 function updatecategory($catID, $catDesc, $catName){
+    $CON = connectdb();
     $sql = " UPDATE categories SET Name = '$catName', Description= '$catDesc' WHERE Name = '$catID' ";
     if($CON->exec($sql)){
         header("location:../index.php?active=add_category");
@@ -56,13 +58,15 @@ function updatecategory($catID, $catDesc, $catName){
 }
 
 function contacts($contCatId,$country, $contPhone,$contName, $contCreator,$contEmail){
+    $CON = connectdb();
     $sql = "INSERT INTO contacts(ContCatID, CountryCode, ContPhone,ContName,ContCreator,ContEmail) VALUES('$contCatId',$country, '$contPhone','$contName', '$contCreator','$contEmail')";
     
    $CON->exec($sql);
-   
+   header("location:../index.php?active=get_contacts");
    
 }
 function updatecontact($contID, $phone, $name, $email){
+    $CON = connectdb();
     $sql = "UPDATE contacts SET ContPhone = '$phone', ContName = '$name', ContEmail= '$email' WHERE ContID='$contID'";
     if($CON->exec($sql)){
         header("location:../index.php?active=get_contacts");

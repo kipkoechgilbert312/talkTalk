@@ -28,10 +28,10 @@ try {
     // array fo stdClass so when looping access with $key->phone, $key->statusCode etc
     $messageRecipients = $messageData->Recipients; 
    
-    // $sql = "INSERT INTO messages(MsgPhone, MsgText,MsgCreateTime, MsgSender) VALUES('$recipients','$message',now(),'$userid')";
-    // connectdb()->exec($sql);
+    $sql = "INSERT INTO messages(MsgPhone, MsgText,MsgCreateTime, MsgSender) VALUES('$recipients','$message',now(),'$userid')";
+    connectdb()->exec($sql);
      
-    // echo "<script type= 'text/javascript'>alert('Message successfully sent');</script>";
+    echo "<script type= 'text/javascript'>alert('Message successfully sent');</script>";
 
 } catch (Exception $e) {
     echo "Error: ".$e->getMessage();
