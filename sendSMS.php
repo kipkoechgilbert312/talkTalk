@@ -12,27 +12,27 @@ $sms        = $AT->sms();
 
 
 function sendSMS($recipients, $message){
-    
 try {
-    $sms = $GLOBALS['sms'];
-    $userid = $_SESSION["id"];
-    $result = $sms->send([
-        'to'      => $recipients,
-        'message' => $message
-    ]); 
+//     $sms = $GLOBALS['sms'];
+//     $userid = $_SESSION["id"];
+//     $result = $sms->send([
+//         'to'      => $recipients,
+//         'message' => $message
+//     ]); 
     
-    $status = $result['status'];
-    $data = $result['data'];
-    $messageData = $data->SMSMessageData;
-    $messageString = $messageData->Message;
-    // array fo stdClass so when looping access with $key->phone, $key->statusCode etc
-    $messageRecipients = $messageData->Recipients; 
-   
-    $sql = "INSERT INTO messages(MsgPhone, MsgText,MsgCreateTime, MsgSender) VALUES('$recipients','$message',now(),'$userid')";
-    connectdb()->exec($sql);
-     
-    echo "<script type= 'text/javascript'>alert('Message successfully sent');</script>";
-
+//     $status = $result['status'];
+//     $data = $result['data'];
+//     $messageData = $data->SMSMessageData;
+//     $messageString = $messageData->Message;
+//     // array fo stdClass so when looping access with $key->phone, $key->statusCode etc
+//     $messageRecipients = $messageData->Recipients; 
+    $userid = $_SESSION["id"];
+    foreach($recipients as $recipient){
+        $sql = "INSERT INTO messages(MsgPhone, MsgText,MsgCreateTime, MsgSender) VALUES('$recipient','$message',now(),'$userid')";
+        connectdb()->exec($sql);
+         
+        echo "<script type= 'text/javascript'>alert('Message successfully sent');</script>";
+    }
 } catch (Exception $e) {
     echo "Error: ".$e->getMessage();
 }
