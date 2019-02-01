@@ -1,6 +1,6 @@
 <?php
 require 'vendor/autoload.php';
-require 'includes\config.php';
+// require 'includes\config.php';
 use AfricasTalking\SDK\AfricasTalking;
 
 $username   = "Quadrant";
@@ -13,12 +13,17 @@ $sms        = $AT->sms();
 
 function sendSMS($recipients, $message){
 try {
-//     $sms = $GLOBALS['sms'];
-//     $userid = $_SESSION["id"];
-//     $result = $sms->send([
-//         'to'      => $recipients,
-//         'message' => $message
-//     ]); 
+    // echo $recipients;
+    // echo $message;
+      // $userid = $_SESSION["id"];
+    $sms = $GLOBALS['sms'];
+
+    $result = $sms->send([
+        'to'      => $recipients,
+        'message' => $message
+    ]); 
+    var_dump($result);
+    
     
 //     $status = $result['status'];
 //     $data = $result['data'];
@@ -26,13 +31,16 @@ try {
 //     $messageString = $messageData->Message;
 //     // array fo stdClass so when looping access with $key->phone, $key->statusCode etc
 //     $messageRecipients = $messageData->Recipients; 
-    $userid = $_SESSION["id"];
-    foreach($recipients as $recipient){
-        $sql = "INSERT INTO messages(MsgPhone, MsgText,MsgCreateTime, MsgSender) VALUES('$recipient','$message',now(),'$userid')";
-        connectdb()->exec($sql);
+    // $userid = $_SESSION["id"];
+    // $recipient =explode(" " , $recipients);
+// var_dump($recipient);
+    // foreach($recipient as $recipien){
+    //     var_dump($recipien) ."<br/>";
+    //     // $sql = "INSERT INTO messages(MsgPhone, MsgText,MsgCreateTime, MsgSender) VALUES('$recipien','$message',now(),'$userid')";
+    //     // connectdb()->exec($sql);
          
-        echo "<script type= 'text/javascript'>alert('Message successfully sent');</script>";
-    }
+    //     // echo "<script type= 'text/javascript'>alert('Message successfully sent');</script>";
+    // }
 } catch (Exception $e) {
     echo "Error: ".$e->getMessage();
 }

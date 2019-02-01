@@ -17,7 +17,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 <ul>  
                 <?php $active = isset($_GET['active']) ? $_GET['active'] : "";?>
                 <li><a href="#"><i class="fa fa-user fa-fw"></i> <?php echo htmlspecialchars($_SESSION["email"]); ?></a></li>
-                <li><a href="?active=message">SEND MESSAGE</a></li>
+               <li><a href="?active=message"><span><i class="far fa-envelope"></i></span>  SEND MESSAGE</a></li>
 		        <li><a href="?active=add_category">ADD CATEGORY</a></li>
 		        <li><a href="?active=get_contacts">ADD CONTACTS</a></li>                  
                 </ul>

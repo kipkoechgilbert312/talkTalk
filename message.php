@@ -2,6 +2,7 @@
 require_once('includes\config.php');
 include_once('includes\model.php');
 include_once('sendSMS.php');
+
 $CON =connectdb();
 $userid =$_SESSION['id'];
     $stmt = "SELECT *, accounts.OrganisationName from users INNER JOIN accounts on users.accountId =accounts.ID where userId =$userid";
@@ -16,10 +17,34 @@ $userid =$_SESSION['id'];
 
 if(isset($_POST['tuma'])){
 
-  $recipients =$_POST['contact'];
+  $recipient =implode(',', $_POST['contact']);
+  $recipients = rtrim($recipient, ',');
   $message = $_POST['ujumbe'];
 
   sendSMS($recipients, $message);
+}
+if(isset($_POST['submit'])){
+  $message =$_POST['ujumbe'];
+  $query = "SELECT DISTINCT(ContPhone) from contacts";
+      $i = 0;
+      $selectedOptionCount = count($_POST['cat_id']);
+      $selectedOption = implode(',', $_POST['cat_id']);
+      $query = $query . " WHERE ContCatID in (" . $selectedOption . ")";
+      
+      $result = connectdb()->Query($query);
+  }
+  if (! empty($result)) {
+      $recipient = "";
+      foreach ($result as  $value) {
+  //   var_dump($value);
+          $recipient .= $value['ContPhone'].",";
+  
+      }
+  
+      $recipien = rtrim($recipient, ",");
+      $recipients = 0 . $recipien;
+
+      sendSMS($recipients, $message);
 }
 ?>
 <div class="row">
@@ -39,7 +64,6 @@ if(isset($_POST['tuma'])){
     <tr>
       <th scope="col">Message Contact</th>
       <th scope="col">Message Text</th>
-      <th scope="col">Edit</th>
       <th scope="col">Resend</th>
       <th scope="col">Delete</th>
     </tr>
@@ -53,9 +77,8 @@ if(isset($_POST['tuma'])){
         ?><tr>
             <td><?php echo $message['MsgPhone'] ?></td>
             <td><?php echo $message['MsgText'] ?></td>
-            <td><button type="button" class="btn btn-warning"><a href="includes\editmessage.php?id=<?php echo $message['CatID']; ?> "><i class="fas fa-edit"></i></a></button></td>
-            <td><button type="button" class="btn btn-warning"><a href="includes\resendSMS.php.php?id=<?php echo $message['CatID']; ?> "><i class="far fa-share-square"></i></a></button></td>
-            <td><button type="button" class="btn btn-danger"><a href="includes\deletemessage.php?id=<?php echo $message['CatID']; ?>"><i class="fas fa-trash-alt"></i></a></button></td>
+            <td><button type="button" class="btn btn-warning"><a href="includes\resendSMS.php.php?id=<?php echo $message['MsgID']; ?> "><i class="far fa-share-square"></i></a></button></td>
+            <td><button type="button" class="btn btn-danger"><a href="includes\deletemessage.php?id=<?php echo $message['MsgID']; ?>"><i class="fas fa-trash-alt"></i></a></button></td>
           </tr>
 <?php }
         ?>
@@ -76,9 +99,8 @@ if(isset($_POST['tuma'])){
       <form action="" method="post"> 
     <div class="form-group"><label for="type">Type:</label>
     <select name="contact[]" class="selectpicker" data-live-search="true" multiple >
-  <!-- <option value="" disabled selected>Select Contacts</option> -->
         <?php 
-        $getcategory = connectdb()->prepare("SELECT * FROM  contacts ");
+        $getcategory = connectdb()->prepare("SELECT *  FROM  contacts");
         $getcategory->execute();
         $categories = $getcategory->fetchAll();
         
@@ -121,29 +143,36 @@ if(isset($_POST['tuma'])){
       </div>
       <div class="modal-body">
      
-      <form action="" method="post"> 
-      <div class="form-group">
-            <label for="category">Select Category: </label>
-        <select name="type" id="" class="selectpicker">
-           
-        <?php 
-        $getcategory = connectdb()->prepare("SELECT * FROM  categories CatOrgId = 11");
-        $getcategory->execute($getcategory);
-        $categories = $getcategory->fetchAll();
+      <form action="" method="post">
 
-        foreach ($categories as $category) {
+<div class="form-group">
+      <select name="cat_id[]" id="" class="selectpicker" multiple >    
+    <?php 
+            $CON = connectdb();
+            $getcategory = $CON->prepare("SELECT CatID, CatOrgId,Name, Description, accounts.OrganisationName FROM `categories` INNER JOIN accounts ON categories.CatOrgId = accounts.ID WHERE CatOrgId = $catorgid");
+            $getcategory->execute();
+            $categories = $getcategory->fetchAll();
             
-        ?>
-            <option value="<?php echo $category['CatID'] ?> "><?php echo $category['Name'] ?></option>
-<?php }
-        ?>
-        </select>
+            foreach ($categories as $category) {
+            
+?>
+    <option value="<?php echo $category['CatID'];?>"><?php echo $category['Name'];?></option>
+<?php 
+}
+
+?>
+
+    </select>
     </div>
-    <div class="form-group">
-       <label for="Message">Message:</label> <textarea name="ujumbe" id="msg" cols="20" rows="5" class="form-control">
-        </textarea>
-    </div>
-    <button type="submit" class="btn btn-sm btn-primary" name="tuma"> Send </button>
+<div class="form-group">
+
+<textarea name="ujumbe" id="" cols="30" rows="10" class="form-control">
+
+</textarea>
+
+
+</div>
+    <button type="submit" name="submit" class="btn btn-default">Submit</button>
 </form>
 
       </div>
@@ -154,18 +183,8 @@ if(isset($_POST['tuma'])){
     </div>
   </div>
 </div>
-<div class="col-sm-9">
-    <?php var_dump($categories);?>
-    </div>
-<?php
 
-// $cats = implode(',', $_POST['cat_id']);
-// $query = "SELECT ContactPhone FROM contacts WHERE ContactCatID IN ($cats)";
-// $RECS = "";
-// while( $row = mysqli_fetch_array(mysqli_query($con, $query))){
-//   $RECS .= $row['ContactPhone'].',';
-// }
-       ?> 
+
 
 
 
