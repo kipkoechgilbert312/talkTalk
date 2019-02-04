@@ -77,7 +77,7 @@ if(isset($_POST['submit'])){
         ?><tr>
             <td><?php echo $message['MsgPhone'] ?></td>
             <td><?php echo $message['MsgText'] ?></td>
-            <td><button type="button" class="btn btn-warning"><a href="includes\resendSMS.php.php?id=<?php echo $message['MsgID']; ?> "><i class="far fa-share-square"></i></a></button></td>
+            <td><button type="button" class="btn btn-warning"><a href="includes\resendSMS.php?id=<?php echo $message['MsgID']; ?> "><i class="far fa-share-square"></i></a></button></td>
             <td><button type="button" class="btn btn-danger"><a href="includes\deletemessage.php?id=<?php echo $message['MsgID']; ?>"><i class="fas fa-trash-alt"></i></a></button></td>
           </tr>
 <?php }
